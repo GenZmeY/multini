@@ -1,0 +1,22 @@
+A utility for manipulating ini files with duplicate keys
+
+Usage: multini [OPTION]... [ACTION] config_file [section] [param] [value]
+Actions:
+  -g, --get          get values for a given combination of parameters.
+  -s, --set          set values for a given combination of parameters.
+  -a, --add          add values for a given combination of parameters.
+  -d, --del          delete the given combination of parameters.
+  -c, --chk          display parsing errors for the specified file.
+
+Options:
+  -e, --existing     For --set and --del, fail if item is missing.
+  -i, --inplace      Lock and write files in place.
+                     This is not atomic but has less restrictions
+                     than the default replacement method.
+  -o, --output FILE  Write output to FILE instead. '-' means stdout
+  -u, --unix         Use LF as end of line
+  -w, --windows      Use CRLF as end of line
+  -h, --help         Write this help to stdout
+      --version      Write version to stdout
+
+2020 (c) GenZmeY
