@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 
 	"multini/output"
@@ -37,7 +36,7 @@ func main() {
 
 	ini, err = iniRead(ArgFile)
 	if err != nil {
-		fmt.Println(err)
+		output.Errorln(err)
 		os.Exit(EXIT_FILE_READ_ERR)
 	}
 

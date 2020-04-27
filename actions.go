@@ -22,7 +22,7 @@ func chk() int {
 
 func add(ini *types.Ini) error {
 	if ArgKeyIsSet {
-		return ini.AddKey(ArgSection, ArgKey, ArgValue)
+		return ini.AddKey(ArgSection, ArgKey, ArgValue, ArgReverse)
 	} else {
 		ini.AddSection(ArgSection)
 		return nil

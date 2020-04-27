@@ -23,6 +23,8 @@ var (
 	ArgUnix     bool
 	ArgHelp     bool
 	ArgExisting bool
+	ArgReverse  bool
+	ArgQuiet    bool
 	ArgOutput   string
 
 	ArgFile         string
@@ -40,14 +42,15 @@ func printHelp() {
 	output.Println("")
 	output.Println("Usage: multini [OPTION]... [ACTION] config_file [section] [param] [value]")
 	output.Println("Actions:")
-	output.Println("  -g, --get          get values for a given combination of parameters.")
-	output.Println("  -s, --set          set values for a given combination of parameters.")
-	output.Println("  -a, --add          add values for a given combination of parameters.")
-	output.Println("  -d, --del          delete the given combination of parameters.")
-	output.Println("  -c, --chk          display parsing errors for the specified file.")
+	output.Println("  -g, --get          Get values for a given combination of parameters.")
+	output.Println("  -s, --set          Set values for a given combination of parameters.")
+	output.Println("  -a, --add          Add values for a given combination of parameters.")
+	output.Println("  -d, --del          Delete the given combination of parameters.")
+	output.Println("  -c, --chk          Display parsing errors for the specified file.")
 	output.Println("")
 	output.Println("Options:")
 	output.Println("  -e, --existing     For --set and --del, fail if item is missing.")
+	output.Println("  -r, --reverse      For --add, adds an item to the top of the section")
 	output.Println("  -i, --inplace      Lock and write files in place.")
 	output.Println("                     This is not atomic but has less restrictions")
 	output.Println("                     than the default replacement method.")
@@ -55,6 +58,7 @@ func printHelp() {
 	//	output.Println("  -v, --verbose      Indicate on stderr if changes were made")
 	output.Println("  -u, --unix         Use LF as end of line")
 	output.Println("  -w, --windows      Use CRLF as end of line")
+	output.Println("  -q, --quiet        Suppress all normal output")
 	output.Println("  -h, --help         Write this help to stdout")
 	output.Println("      --version      Write version to stdout")
 }
@@ -74,14 +78,18 @@ func init() {
 	gnuflag.BoolVar(&ArgDel, "d", false, "")
 	gnuflag.BoolVar(&ArgChk, "chk", false, "")
 	gnuflag.BoolVar(&ArgChk, "c", false, "")
-	gnuflag.BoolVar(&ArgDel, "inplace", false, "")
-	gnuflag.BoolVar(&ArgDel, "i", false, "")
+	gnuflag.BoolVar(&ArgInplace, "inplace", false, "")
+	gnuflag.BoolVar(&ArgInplace, "i", false, "")
 	gnuflag.BoolVar(&ArgUnix, "unix", false, "")
 	gnuflag.BoolVar(&ArgUnix, "u", false, "")
 	gnuflag.BoolVar(&ArgWindows, "windows", false, "")
 	gnuflag.BoolVar(&ArgWindows, "w", false, "")
+	gnuflag.BoolVar(&ArgReverse, "reverse", false, "")
+	gnuflag.BoolVar(&ArgReverse, "r", false, "")
 	gnuflag.BoolVar(&ArgExisting, "existing", false, "")
 	gnuflag.BoolVar(&ArgExisting, "e", false, "")
+	gnuflag.BoolVar(&ArgQuiet, "quiet", false, "")
+	gnuflag.BoolVar(&ArgQuiet, "q", false, "")
 	gnuflag.BoolVar(&ArgVerbose, "verbose", false, "")
 	gnuflag.BoolVar(&ArgVerbose, "v", false, "")
 	gnuflag.StringVar(&ArgOutput, "output", "", "")
@@ -117,6 +125,7 @@ func parseArgs() error {
 	// Output settings
 	output.SetEndOfLineNative()
 	output.SetVerbose(ArgVerbose)
+	output.SetQuiet(ArgQuiet)
 
 	// Positional Args
 	for i := 0; i < 4 && i < gnuflag.NArg(); i++ {

@@ -16,6 +16,14 @@ var (
 	verbose   *log.Logger = devNull
 )
 
+func SetQuiet(enabled bool) {
+	if enabled {
+		stdout = devNull
+		stderr = devNull
+		verbose = devNull
+	}
+}
+
 func SetVerbose(enabled bool) {
 	if enabled {
 		verbose = stderr

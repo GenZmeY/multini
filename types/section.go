@@ -111,39 +111,54 @@ func (obj *Section) GetKeyVal(name, value string) error {
 	return errors.New("Parameter:Value not found: " + name + ":" + value)
 }
 
-func (obj *Section) appendKey(name, value string) {
+func (obj *Section) appendKey(name, value string, reverse bool) {
 	var newKeyValue KeyValue
 	var replaceIndex int = -1
 	newKeyValue.Key = name
 	newKeyValue.Value = value
-	// replace first emptyline
-	for i := len(obj.Lines) - 1; i >= 0; i-- {
-		if obj.Lines[i].Type() == TEmptyLine {
-			replaceIndex = i
-		} else {
-			break
+	if reverse {
+		// for right indent and tabs
+		for i := 0; i < len(obj.Lines); i++ {
+			if obj.Lines[i].Type() == TKeyValue {
+				template := obj.Lines[i].(*KeyValue)
+				newKeyValue.PrefixKey = template.PrefixKey
+				newKeyValue.PostfixKey = template.PostfixKey
+				newKeyValue.PrefixValue = template.PrefixValue
+				newKeyValue.PostfixValue = template.PostfixValue
+				break
+			}
 		}
-	}
-	// for right indent and tabs
-	for i := len(obj.Lines) - 1; i >= 0; i-- {
-		if obj.Lines[i].Type() == TKeyValue {
-			template := obj.Lines[i].(*KeyValue)
-			newKeyValue.PrefixKey = template.PrefixKey
-			newKeyValue.PostfixKey = template.PostfixKey
-			newKeyValue.PrefixValue = template.PrefixValue
-			newKeyValue.PostfixValue = template.PostfixValue
-			break
-		}
-	}
-	if replaceIndex == -1 {
-		obj.Lines = append(obj.Lines, &newKeyValue)
+		obj.Lines = append([]Element{&newKeyValue}, obj.Lines...)
 	} else {
-		obj.Lines = append(obj.Lines, obj.Lines[replaceIndex])
-		obj.Lines[replaceIndex] = &newKeyValue
+		// replace first emptyline
+		for i := len(obj.Lines) - 1; i >= 0; i-- {
+			if obj.Lines[i].Type() == TEmptyLine {
+				replaceIndex = i
+			} else {
+				break
+			}
+		}
+		// for right indent and tabs
+		for i := len(obj.Lines) - 1; i >= 0; i-- {
+			if obj.Lines[i].Type() == TKeyValue {
+				template := obj.Lines[i].(*KeyValue)
+				newKeyValue.PrefixKey = template.PrefixKey
+				newKeyValue.PostfixKey = template.PostfixKey
+				newKeyValue.PrefixValue = template.PrefixValue
+				newKeyValue.PostfixValue = template.PostfixValue
+				break
+			}
+		}
+		if replaceIndex == -1 {
+			obj.Lines = append(obj.Lines, &newKeyValue)
+		} else {
+			obj.Lines = append(obj.Lines, obj.Lines[replaceIndex])
+			obj.Lines[replaceIndex] = &newKeyValue
+		}
 	}
 }
 
-func (obj *Section) AddKey(name, value string) {
+func (obj *Section) AddKey(name, value string, reverse bool) {
 	gotIt := false
 	for i, keyVal := range obj.Lines {
 		if keyVal.Type() == TKeyValue &&
@@ -157,7 +172,7 @@ func (obj *Section) AddKey(name, value string) {
 		}
 	}
 	if !gotIt {
-		obj.appendKey(name, value)
+		obj.appendKey(name, value, reverse)
 	}
 }
 
@@ -176,7 +191,7 @@ func (obj *Section) SetKey(name, value string) error {
 	}
 	if !gotIt {
 		if createIfNotExist() {
-			obj.appendKey(name, value)
+			obj.appendKey(name, value, false)
 		} else {
 			return errors.New("Parameter not found: " + name)
 		}

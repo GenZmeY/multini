@@ -102,7 +102,7 @@ func (obj *Ini) SetSection(section string) *Section {
 	return obj.AddSection(section)
 }
 
-func (obj *Ini) AddKey(section, key, value string) error {
+func (obj *Ini) AddKey(section, key, value string, reverse bool) error {
 	sect, err := obj.FindSection(section)
 	if err != nil {
 		if createIfNotExist() {
@@ -111,7 +111,7 @@ func (obj *Ini) AddKey(section, key, value string) error {
 			return err
 		}
 	}
-	sect.AddKey(key, value)
+	sect.AddKey(key, value, reverse)
 	return nil
 }
 
