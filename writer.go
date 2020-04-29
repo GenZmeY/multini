@@ -2,12 +2,54 @@ package main
 
 import (
 	"bufio"
+	"io"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 
 	"multini/types"
 )
+
+// Source: https://gist.github.com/var23rav/23ae5d0d4d830aff886c3c970b8f6c6b
+/*
+   GoLang: os.Rename() give error "invalid cross-device link" for Docker container with Volumes.
+   MoveFile(source, destination) will work moving file between folders
+*/
+func tryMoveFile(sourcePath, destPath string) error {
+	inputFile, err := os.Open(sourcePath)
+	if err != nil {
+		return err
+	}
+	outputFile, err := os.Create(destPath)
+	if err != nil {
+		inputFile.Close()
+		return err
+	}
+	defer outputFile.Close()
+	_, err = io.Copy(outputFile, inputFile)
+	inputFile.Close()
+	if err != nil {
+		return err
+	}
+	// The copy was successful, so now delete the original file
+	err = os.Remove(sourcePath)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func tryRemoveRenameFile(sourcePath, destPath string) bool {
+	err := os.Remove(destPath)
+	if err != nil {
+		return false
+	}
+	err = os.Rename(sourcePath, destPath)
+	if err != nil {
+		return false
+	}
+	return true
+}
 
 func replaceOriginal(oldFile, newFile string) error {
 	realOldFile, err := filepath.EvalSymlinks(oldFile)
@@ -23,14 +65,11 @@ func replaceOriginal(oldFile, newFile string) error {
 
 	var uid, gid int = GetUidGid(infoOldFile)
 
-	err = os.Remove(realOldFile)
-	if err != nil {
-		return err
-	}
-
-	err = os.Rename(newFile, realOldFile)
-	if err != nil {
-		return err
+	if !tryRemoveRenameFile(newFile, realOldFile) {
+		err = tryMoveFile(newFile, realOldFile)
+		if err != nil {
+			return err
+		}
 	}
 
 	err = os.Chmod(realOldFile, mode)
