@@ -89,6 +89,14 @@ func (obj *Ini) GetKeyVal(section, key, value string) error {
 func (obj *Ini) AddSection(section string) *Section {
 	sect, err := obj.FindSection(section)
 	if err != nil {
+		sectSize := len(obj.Sections)
+		if sectSize > 1 {
+			prevSect := obj.Sections[sectSize-1].(*Section)
+			lineSize := len(prevSect.Lines)
+			if lineSize == 0 || lineSize > 0 && prevSect.Lines[lineSize-1].Type() != TEmptyLine {
+				obj.Sections[sectSize-1].(*Section).Lines = append(obj.Sections[sectSize-1].(*Section).Lines, &EmptyLine{})
+			}
+		}
 		var newSection Section
 		newSection.Name = section
 		newSection.Prefix = obj.Sections[len(obj.Sections)-1].Indent()

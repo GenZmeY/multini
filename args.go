@@ -100,7 +100,7 @@ func init() {
 }
 
 func parseArgs() error {
-	gnuflag.Parse(true)
+	gnuflag.Parse(false)
 
 	// info
 	switch {
