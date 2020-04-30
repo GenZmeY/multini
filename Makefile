@@ -1,5 +1,5 @@
 NAME=multini
-VERSION=0.2.2
+VERSION=0.2.3
 GOCMD=go
 LDFLAGS:="$(LDFLAGS) -X 'main.Version=$(VERSION)'"
 GOBUILD=$(GOCMD) build -ldflags=$(LDFLAGS)
