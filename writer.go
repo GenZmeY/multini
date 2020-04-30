@@ -114,7 +114,7 @@ func iniWriteInplace(filename string, ini *types.Ini) error {
 		}
 		mode = info.Mode()
 	}
-	targetFile, err := os.OpenFile(realfilename, os.O_WRONLY|os.O_CREATE, mode)
+	targetFile, err := os.OpenFile(realfilename, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, mode)
 	if err == nil {
 		datawriter := bufio.NewWriter(targetFile)
 		_, err = datawriter.WriteString(ini.Full())
