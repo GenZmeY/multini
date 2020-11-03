@@ -1,4 +1,4 @@
-NAME     = $(shell basename $(shell readlink -e .))
+NAME     = multini
 VERSION  = dev_$(shell date +%F_%T)
 GOCMD    = go
 LDFLAGS := "$(LDFLAGS) -X 'main.Version=$(VERSION)'"
@@ -57,7 +57,7 @@ windows-amd64: prep
 
 compile: freebsd-386 darwin-386 linux-386 windows-386 freebsd-amd64 darwin-amd64 linux-amd64 windows-amd64
 	
-install: check-build
+install: check-build doc
 	install -m 755 -d         $(PREFIX)/bin/
 	install -m 755 $(BIN)     $(PREFIX)/bin/
 	install -m 755 -d         $(PREFIX)/share/licenses/$(NAME)/
