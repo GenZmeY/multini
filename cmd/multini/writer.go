@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"multini/types"
+	"multini/internal/types"
 )
 
 // Source: https://gist.github.com/var23rav/23ae5d0d4d830aff886c3c970b8f6c6b

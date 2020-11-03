@@ -1,20 +1,29 @@
-NAME=multini
-VERSION=0.2.3
-GOCMD=go
-LDFLAGS:="$(LDFLAGS) -X 'main.Version=$(VERSION)'"
-GOBUILD=$(GOCMD) build -ldflags=$(LDFLAGS)
-SRCMAIN=.
-BINDIR=bin
-BIN=$(BINDIR)/$(NAME)
-README=README
-LICENSE=LICENSE
-TEST=./run_test.sh
-PREFIX=/usr
+NAME     = $(shell basename $(shell readlink -e .))
+VERSION  = dev_$(shell date +%F_%T)
+GOCMD    = go
+LDFLAGS := "$(LDFLAGS) -X 'main.Version=$(VERSION)'"
+GOBUILD  = $(GOCMD) build -ldflags=$(LDFLAGS)
+SRCMAIN  = ./cmd/$(NAME)
+SRCDOC   = ./doc
+SRCTEST  = ./test
+BINDIR   = bin
+BIN      = $(BINDIR)/$(NAME)
+README   = $(SRCDOC)/README
+LICENSE  = LICENSE
+TEST     = $(SRCTEST)/run_test.sh
+PREFIX   = /usr
+
+.PHONY: all prep doc build check-build freebsd-386 darwin-386 linux-386 windows-386 freebsd-amd64 darwin-amd64 linux-amd64 windows-amd64 compile install check-install uninstall clean test
 
 all: build
 
 prep: clean
+	go mod init; go mod tidy
 	mkdir $(BINDIR)
+	
+doc: check-build
+	test -d $(SRCDOC) || mkdir $(SRCDOC)
+	$(BIN) --help > $(README)
 	
 build: prep
 	$(GOBUILD) -o $(BIN) $(SRCMAIN)
@@ -71,3 +80,4 @@ clean:
 	
 test: check-build
 	$(TEST) $(BIN)
+

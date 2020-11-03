@@ -3,8 +3,8 @@ package main
 import (
 	"os"
 
-	"multini/output"
-	"multini/types"
+	"multini/internal/output"
+	"multini/internal/types"
 )
 
 const (

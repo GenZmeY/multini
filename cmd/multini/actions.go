@@ -1,8 +1,8 @@
 package main
 
 import (
-	"multini/output"
-	"multini/types"
+	"multini/internal/output"
+	"multini/internal/types"
 )
 
 func chk() int {

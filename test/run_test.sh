@@ -1,10 +1,11 @@
 #!/bin/bash
 
 DEF='\e[0m'; BLD='\e[1m'; RED='\e[31m'; GRN='\e[32m'; WHT='\e[97m'
+
 ScriptFullname=$(readlink -e "$0")
 ScriptName=$(echo "$ScriptFullname" | awk -F '/' '{print $NF;}')
 ScriptDir=$(dirname "$ScriptFullname")
-TestDir="$ScriptDir/tests"
+TestDir="$ScriptDir/data"
 Multini=$(readlink -e "$1")
 
 if [[ -z "$Multini" ]]; then

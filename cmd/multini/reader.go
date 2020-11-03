@@ -7,8 +7,8 @@ import (
 	"regexp"
 	"strings"
 
-	"multini/output"
-	"multini/types"
+	"multini/internal/output"
+	"multini/internal/types"
 )
 
 var (
@@ -26,15 +26,15 @@ var (
 
 	RxBodyPrefix    string         = `(?P<` + NgPrefix + `>\s+)?`
 	RxSectionName   string         = `\[(?P<` + NgSection + `>.+)\]`
-	RxKey           string         = `(?P<` + NgKey + `>(?:[^;#=]+[^\s=;#]|[^;#=]))?`
+	RxKey           string         = `(?P<` + NgKey + `>(?:[^;#/=]+[^\s=;#/]|[^;#/=]))?`
 	RxKeyPostfix    string         = `(?P<` + NgKeyPostfix + `>\s+)?`
 	RxValuePrefix   string         = `(?P<` + NgValuePrefix + `>\s+)?`
-	RxValue         string         = `(?P<` + NgValue + `>(?:[^;#]+[^\s;#]|[^;#]))?`
+	RxValue         string         = `(?P<` + NgValue + `>(?:[^;#/]+[^\s;#/]|[^;#/]))?`
 	RxValuePostfix  string         = `(?P<` + NgValuePostfix + `>\s+)?`
 	RxKeyVal        string         = RxKey + RxKeyPostfix + `=` + RxValuePrefix + RxValue + RxValuePostfix
 	RxBody          string         = `(?:` + RxSectionName + `|` + RxKeyVal + `)?`
 	RxBodyPostfix   string         = `(?P<` + NgPostifx + `>\s+)?`
-	RxCommentPrefix string         = `(?P<` + NgCommentPrefix + `>[#;]\s*)`
+	RxCommentPrefix string         = `(?P<` + NgCommentPrefix + `>([#;]|//)\s*)`
 	RxCommentText   string         = `(?P<` + NgComment + `>.+)?`
 	RxComment       string         = `(?:` + RxCommentPrefix + RxCommentText + `)?`
 	Rx              string         = RxBodyPrefix + RxBody + RxBodyPostfix + RxComment

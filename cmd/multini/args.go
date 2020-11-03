@@ -4,8 +4,8 @@ import (
 	"errors"
 	"os"
 
-	"multini/output"
-	"multini/types"
+	"multini/internal/output"
+	"multini/internal/types"
 
 	"github.com/juju/gnuflag"
 )
