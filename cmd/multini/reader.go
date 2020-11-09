@@ -13,43 +13,97 @@ import (
 
 var (
 	// Ng - Named Group
-	NgPrefix        string = `prefix`
-	NgPostifx       string = `postfix`
-	NgSection       string = `section`
-	NgKey           string = `key`
-	NgKeyPostfix    string = `key_postfix`
-	NgValue         string = `value`
-	NgValuePrefix   string = `value_prefix`
-	NgValuePostfix  string = `value_postfix`
-	NgComment       string = `comment`
-	NgCommentPrefix string = `comment_prefix`
+	NgPrefix       string = `prefix`
+	NgPostifx      string = `postfix`
+	NgSection      string = `section`
+	NgKey          string = `key`
+	NgKeyPostfix   string = `key_postfix`
+	NgValue        string = `value`
+	NgValuePrefix  string = `value_prefix`
+	NgValuePostfix string = `value_postfix`
+	NgComment      string = `comment`
+	NgData         string = `data`
 
-	RxBodyPrefix    string         = `(?P<` + NgPrefix + `>\s+)?`
-	RxSectionName   string         = `\[(?P<` + NgSection + `>.+)\]`
-	RxKey           string         = `(?P<` + NgKey + `>(?:[^;#/=]+[^\s=;#/]|[^;#/=]))?`
-	RxKeyPostfix    string         = `(?P<` + NgKeyPostfix + `>\s+)?`
-	RxValuePrefix   string         = `(?P<` + NgValuePrefix + `>\s+)?`
-	RxValue         string         = `(?P<` + NgValue + `>(?:[^;#/]+[^\s;#/]|[^;#/]))?`
-	RxValuePostfix  string         = `(?P<` + NgValuePostfix + `>\s+)?`
-	RxKeyVal        string         = RxKey + RxKeyPostfix + `=` + RxValuePrefix + RxValue + RxValuePostfix
-	RxBody          string         = `(?:` + RxSectionName + `|` + RxKeyVal + `)?`
-	RxBodyPostfix   string         = `(?P<` + NgPostifx + `>\s+)?`
-	RxCommentPrefix string         = `(?P<` + NgCommentPrefix + `>([#;]|//)\s*)`
-	RxCommentText   string         = `(?P<` + NgComment + `>.+)?`
-	RxComment       string         = `(?:` + RxCommentPrefix + RxCommentText + `)?`
-	Rx              string         = RxBodyPrefix + RxBody + RxBodyPostfix + RxComment
-	RxCompiled      *regexp.Regexp = regexp.MustCompile(Rx)
+	RxEmpty   string = `^(?P<` + NgPrefix + `>\s+)?$`
+	RxSection string = `^(?P<` + NgPrefix + `>\s+)?\[(?P<` + NgSection + `>[^\]]+)\](?P<` + NgPostifx + `>\s+)?$`
+	RxKey     string = `^(?P<` + NgPrefix + `>\s+)?(?P<` + NgKey + `>.*[^\s]+)(?P<` + NgKeyPostfix + `>\s+)?$`
+	RxValue   string = `^(?P<` + NgValuePrefix + `>\s+)?(?P<` + NgValue + `>.*[^\s])(?P<` + NgValuePostfix + `>\s+)?$`
+
+	RxEmptyCompile   *regexp.Regexp = regexp.MustCompile(RxEmpty)
+	RxSectionCompile *regexp.Regexp = regexp.MustCompile(RxSection)
+	RxKeyCompile     *regexp.Regexp = regexp.MustCompile(RxKey)
+	RxValueCompile   *regexp.Regexp = regexp.MustCompile(RxValue)
 )
 
-func rxParse(rx *regexp.Regexp, str string) map[string]string {
-	match := rx.FindStringSubmatch(str)
-	result := make(map[string]string)
-	for i, name := range rx.SubexpNames() {
+func parse(str string) map[string]string {
+	var result map[string]string = make(map[string]string)
+	var data string
+
+	data, result[NgComment] = getDataComment(str)
+
+	if data != "" {
+		findNamedGroups(data, RxEmptyCompile, &result)
+	}
+
+	if result[NgPrefix] != "" {
+		return result
+	}
+
+	findNamedGroups(data, RxSectionCompile, &result)
+
+	if result[NgSection] == "" && data != "" {
+		keyPart, valPart := getKeyValue(data)
+		findNamedGroups(keyPart, RxKeyCompile, &result)
+		findNamedGroups(valPart, RxValueCompile, &result)
+	}
+
+	return result
+}
+
+func findNamedGroups(str string, Rx *regexp.Regexp, result *map[string]string) {
+	match := Rx.FindStringSubmatch(str)
+	for i, name := range Rx.SubexpNames() {
 		if i != 0 && name != "" && i <= len(match) {
-			result[name] = match[i]
+			(*result)[name] = match[i]
 		}
 	}
-	return result
+}
+
+func getDataComment(str string) (string, string) {
+	var indexes []int
+	var commentIndex int = -1
+
+	indexes = append(indexes, strings.Index(str, "//"))
+	indexes = append(indexes, strings.Index(str, "#"))
+	indexes = append(indexes, strings.Index(str, ";"))
+
+	for _, index := range indexes {
+		if commentIndex == -1 {
+			if index != -1 {
+				commentIndex = index
+			}
+		} else {
+			if index != -1 {
+				if commentIndex > index {
+					commentIndex = index
+				}
+			}
+		}
+	}
+
+	if commentIndex == -1 {
+		return str, ""
+	} else {
+		return str[:commentIndex], str[commentIndex:]
+	}
+}
+
+func getKeyValue(data string) (string, string) {
+	index := strings.Index(data, "=")
+	if index != -1 {
+		return data[:index], data[index+1:]
+	}
+	return "", ""
 }
 
 func debugMap(el map[string]string) string {
@@ -61,14 +115,14 @@ func debugMap(el map[string]string) string {
 }
 
 func appendLine(ini *types.Ini, line string) error {
-	elements := rxParse(RxCompiled, line)
+	// elements := rxParse(line)
+	elements := parse(line)
 	switch {
 	case elements[NgSection] != "":
 		var newSection types.Section
 		newSection.Name = elements[NgSection]
 		newSection.Prefix = elements[NgPrefix]
 		newSection.Postfix = elements[NgPostifx]
-		newSection.Comment.Prefix = elements[NgCommentPrefix]
 		newSection.Comment.Value = elements[NgComment]
 		if newSection.Line() == line {
 			ini.Sections = append(ini.Sections, &newSection)
@@ -87,7 +141,6 @@ func appendLine(ini *types.Ini, line string) error {
 		newKeyValue.PrefixValue = elements[NgValuePrefix]
 		newKeyValue.PostfixValue = elements[NgValuePostfix]
 		newKeyValue.Comment.Value = elements[NgComment]
-		newKeyValue.Comment.Prefix = elements[NgCommentPrefix]
 		if newKeyValue.Line() == line {
 			ini.Sections[len(ini.Sections)-1].(*types.Section).Lines = append(ini.Sections[len(ini.Sections)-1].(*types.Section).Lines, &newKeyValue)
 			return nil
@@ -98,8 +151,8 @@ func appendLine(ini *types.Ini, line string) error {
 		}
 	case elements[NgComment] != "":
 		var newComment types.Comment
-		newComment.Prefix = elements[NgPrefix] + elements[NgCommentPrefix]
 		newComment.Value = elements[NgComment]
+		newComment.Prefix = elements[NgPrefix]
 		if newComment.Line() == line {
 			ini.Sections[len(ini.Sections)-1].(*types.Section).Lines = append(ini.Sections[len(ini.Sections)-1].(*types.Section).Lines, &newComment)
 			return nil
