@@ -39,7 +39,7 @@ Most implementations only support having one property with a given name in a sec
 
 # Usage
 ```
-Usage: multini [option]... ACTION ini_file [section] [param] [value]
+Usage: multini [OPTION]... ACTION ini_file [section] [param] [value]
 Actions:
   -g, --get          Get values for a given combination of parameters.
   -s, --set          Set values for a given combination of parameters.
