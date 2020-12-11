@@ -1,7 +1,7 @@
 # Multini
 
 [![build](https://github.com/GenZmeY/multini/workflows/build/badge.svg)](https://github.com/GenZmeY/multini/actions)
-[![GitHub top language](https://img.shields.io/github/languages/top/GenZmeY/multini)](https://golang.org)
+[![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/GenZmeY/multini)](https://golang.org)
 [![GitHub](https://img.shields.io/github/license/genzmey/multini)](https://github.com/GenZmeY/multini/blob/master/LICENSE)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/GenZmeY/multini)](https://github.com/GenZmeY/multini/releases)
 
@@ -39,7 +39,7 @@ Most implementations only support having one property with a given name in a sec
 
 # Usage
 ```
-Usage: multini [option]... ACTION ini_file [section] [param] [value]
+Usage: multini [OPTION]... ACTION ini_file [section] [param] [value]
 Actions:
   -g, --get          Get values for a given combination of parameters.
   -s, --set          Set values for a given combination of parameters.
