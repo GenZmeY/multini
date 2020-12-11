@@ -1,6 +1,7 @@
 # Multini
 
-[![build](https://github.com/GenZmeY/multini/workflows/build/badge.svg)](https://github.com/GenZmeY/multini/actions)
+[![build](https://github.com/GenZmeY/multini/workflows/build/badge.svg)](https://github.com/GenZmeY/multini/actions?query=workflow%3Abuild)
+[![tests](https://github.com/GenZmeY/multini/workflows/tests/badge.svg)](https://github.com/GenZmeY/multini/actions?query=workflow%3Atests)
 [![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/GenZmeY/multini)](https://golang.org)
 [![GitHub](https://img.shields.io/github/license/genzmey/multini)](https://github.com/GenZmeY/multini/blob/master/LICENSE)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/GenZmeY/multini)](https://github.com/GenZmeY/multini/releases)
