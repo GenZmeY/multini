@@ -1,5 +1,5 @@
 NAME     = multini
-VERSION  = dev_$(shell date +%F_%T)
+VERSION := $(shell git describe)
 GOCMD    = go
 LDFLAGS := "$(LDFLAGS) -s -w -X 'main.Version=$(VERSION)'"
 GOBUILD  = $(GOCMD) build -ldflags=$(LDFLAGS)
