@@ -1,7 +1,7 @@
 NAME     = multini
 VERSION  = dev_$(shell date +%F_%T)
 GOCMD    = go
-LDFLAGS := "$(LDFLAGS) -X 'main.Version=$(VERSION)'"
+LDFLAGS := "$(LDFLAGS) -s -w -X 'main.Version=$(VERSION)'"
 GOBUILD  = $(GOCMD) build -ldflags=$(LDFLAGS)
 SRCMAIN  = ./cmd/$(NAME)
 SRCDOC   = ./doc
