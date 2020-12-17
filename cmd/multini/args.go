@@ -40,7 +40,7 @@ var (
 func printHelp() {
 	output.Println("A utility for manipulating ini files with duplicate keys")
 	output.Println("")
-	output.Println("Usage: multini [OPTION]... [ACTION] config_file [section] [param] [value]")
+	output.Println("Usage: multini [OPTION]... [ACTION] config_file [section] [key] [value]")
 	output.Println("Actions:")
 	output.Println("  -g, --get          Get values for a given combination of parameters.")
 	output.Println("  -s, --set          Set values for a given combination of parameters.")
@@ -55,7 +55,6 @@ func printHelp() {
 	output.Println("                     This is not atomic but has less restrictions")
 	output.Println("                     than the default replacement method.")
 	output.Println("  -o, --output FILE  Write output to FILE instead. '-' means stdout")
-	//	output.Println("  -v, --verbose      Indicate on stderr if changes were made")
 	output.Println("  -u, --unix         Use LF as end of line")
 	output.Println("  -w, --windows      Use CRLF as end of line")
 	output.Println("  -q, --quiet        Suppress all normal output")

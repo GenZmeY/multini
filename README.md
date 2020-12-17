@@ -4,7 +4,7 @@
 [![tests](https://github.com/GenZmeY/multini/workflows/tests/badge.svg)](https://github.com/GenZmeY/multini/actions?query=workflow%3Atests)
 [![CodeQL](https://github.com/GenZmeY/multini/workflows/CodeQL/badge.svg)](https://github.com/GenZmeY/multini/security/code-scanning)
 [![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/GenZmeY/multini)](https://golang.org)
-[![GitHub](https://img.shields.io/github/license/genzmey/multini)](https://github.com/GenZmeY/multini/blob/master/LICENSE)
+[![GitHub](https://img.shields.io/github/license/genzmey/multini)](LICENSE)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/GenZmeY/multini)](https://github.com/GenZmeY/multini/releases)
 
 *Command line utility for manipulating ini files with duplicate key names.*
@@ -41,7 +41,7 @@ Most implementations only support having one property with a given name in a sec
 
 # Usage
 ```
-Usage: multini [OPTION]... ACTION ini_file [section] [param] [value]
+Usage: multini [OPTION]... ACTION ini_file [section] [key] [value]
 Actions:
   -g, --get          Get values for a given combination of parameters.
   -s, --set          Set values for a given combination of parameters.
@@ -65,7 +65,7 @@ Options:
 
 # Examples
 **output a global value not in a section:**  
-`multini --get ini_file '' param`
+`multini --get ini_file '' key`
 
 **output section:**  
 `multini --get ini_file section`
@@ -74,36 +74,36 @@ Options:
 `multini --get ini_file`
 
 **output value:**  
-`multini --get ini_file section param`  
-- if there are several parameters, a list of all values of this parameter will be displayed
+`multini --get ini_file section key`  
+- if there are several keys, a list of all values of this keys will be displayed
 
-**add/update a single parameter:**  
-`multini --set ini_file section parameter value`  
-- if there is no parameter, it will be added  
-- if the parameter exists, the value will be updated  
-- if the parameter exists and has several values, the parameter with the specified value will be set, the rest of the values will be deleted
+**create/update a single key:**  
+`multini --set ini_file section key value`  
+- if there is no key, it will be added  
+- if the key exists, the value will be updated  
+- if the key exists and has several values, the key with the specified value will be set, the rest of the values will be deleted
 
-**add a parameter with specified value:**  
-`multini --add ini_file section parameter value`  
-- if there is no parameter, it will be added  
-- if the parameter exists and does not have the specified value, the new value will be added  
+**add a key with specified value:**  
+`multini --add ini_file section key value`  
+- if there is no key, it will be added  
+- if the key exists and does not have the specified value, the new value will be added  
 - if the specified value repeats the existing one, no changes will be made
 
-**delete all parameters with specified name:**  
-`multini --del ini_file section parameter`
+**delete all keys with specified name:**  
+`multini --del ini_file section key`
 
-**delete a parameter with specified name and value:**  
-`multini --del ini_file section parameter value`
+**delete a key with specified name and value:**  
+`multini --del ini_file section key value`
 
 **delete a section:**  
 `multini --del ini_file section`
 
 **short options can be combined:**  
-`multini -gq ini_file section parameter value`  
-- check the existence of a parameter with a given value using the return code
+`multini -gq ini_file section key value`  
+- check the existence of a key with a given value using the return code
 
 # License
 Copyright © 2020 GenZmeY
 
-The content of this repository is licensed under [MIT License](https://github.com/GenZmeY/multini/blob/master/LICENSE).
+The content of this repository is licensed under [MIT License](LICENSE).
 

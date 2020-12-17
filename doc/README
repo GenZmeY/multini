@@ -1,6 +1,6 @@
 A utility for manipulating ini files with duplicate keys
 
-Usage: multini [OPTION]... [ACTION] config_file [section] [param] [value]
+Usage: multini [OPTION]... [ACTION] config_file [section] [key] [value]
 Actions:
   -g, --get          Get values for a given combination of parameters.
   -s, --set          Set values for a given combination of parameters.
