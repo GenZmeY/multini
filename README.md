@@ -7,6 +7,8 @@
 [![GitHub](https://img.shields.io/github/license/genzmey/multini)](LICENSE)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/GenZmeY/multini)](https://github.com/GenZmeY/multini/releases)
 
+[English](README.md), [Русский](README-ru.md)
+
 *Command line utility for manipulating ini files with duplicate key names.*
 
 A compiled version of multini is available on the [release page](https://github.com/GenZmeY/multini/releases).
