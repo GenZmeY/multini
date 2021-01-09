@@ -23,7 +23,7 @@ jobs:
               go-version: '1.13.0'
         
           - name: Build
-            run:  make -j $(nproc) compile
+            run:  make -j $(nproc) compile VERSION=${{ steps.get_version.outputs.VERSION }}
             
           - name: create release
             id:   create_release
