@@ -1,21 +1,17 @@
 # Multini
 
-[![build](https://github.com/GenZmeY/multini/workflows/build/badge.svg)](https://github.com/GenZmeY/multini/actions?query=workflow%3Abuild)
-[![tests](https://github.com/GenZmeY/multini/workflows/tests/badge.svg)](https://github.com/GenZmeY/multini/actions?query=workflow%3Atests)
-[![CodeQL](https://github.com/GenZmeY/multini/workflows/CodeQL/badge.svg)](https://github.com/GenZmeY/multini/security/code-scanning)
 [![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/GenZmeY/multini)](https://golang.org)
+[![GitHub Tag](https://img.shields.io/github/v/tag/GenZmeY/multini)](CHANGELOG.md)
 [![GitHub](https://img.shields.io/github/license/genzmey/multini)](LICENSE)
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/GenZmeY/multini)](https://github.com/GenZmeY/multini/releases)
 
-[English](README.md), [Русский](README-ru.md)
+**change language / сменить язык:**  
+[English](README.md), Русский
 
-*Утилита командной строки для манипулирования ini файлами с дублирующимися именами ключей.*
+## Описание
+**Утилита командной строки для манипулирования ini файлами с дублирующимися именами ключей.**  
 
 Скомпилированная версия multini доступна на [странице релизов](https://github.com/GenZmeY/multini/releases).
 
-***
-
-# Описание
 Некоторые программы используют формат ini файлов допускающий повторяющиеся имена ключей.  
 Например игры основаные на [unreal engine](https://en.wikipedia.org/wiki/Unreal_Engine).  
 Это может выглядеть так (часть конфигурации Killing Floor 2):
@@ -29,19 +25,18 @@ ServerSubscribedWorkshopItems=2146677560
 Большинство реализаций поддерживают только одно свойство с заданным именем в секции. Если их несколько, будет обрабатываться только первый (или последний) ключ, чего в данном случае недостаточно. multini решает эту проблему.
 
 **примечание:**  
-- multini чувствителен к регистру;  
-- кавычки вокруг значения не обрабатываются (multini считает их частью значения);  
-- многострочные значения не поддерживаются.  
-(но все это может измениться в будущем)  
+- multini чувствителен к регистру  
+- кавычки вокруг значения не обрабатываются (multini считает их частью значения)  
+- многострочные значения не поддерживаются  
 
-# Сборка и установка (вручную)
+## Сборка и установка (вручную)
 1. Установите [golang](https://golang.org), [git](https://git-scm.com/), [make](https://www.gnu.org/software/make/);
 2. Клонируйте этот репозиторий: `git clone https://github.com/GenZmeY/multini`
 3. Перейдите в каталог с исходниками: `cd multini`
 4. Выполните сборку: `make`
 5. Выполните установку: `make install`
 
-# Использование
+## Использование
 ```
 Использование: multini [ПАРАМЕТРЫ]... ДЕЙСТВИЕ ini_file [секция] [ключ] [значение]
 Действия:
@@ -65,7 +60,7 @@ ServerSubscribedWorkshopItems=2146677560
       --version      Отобразить версию
 ```
 
-# Примеры
+## Примеры
 **вывести глобальное значение вне секции:**  
 `multini --get ini_file '' key`
 
@@ -104,8 +99,9 @@ ServerSubscribedWorkshopItems=2146677560
 `multini -gq ini_file section key value`  
 - проверить наличие ключа с заданным значением, используя код возврата
 
-# Лицензия
-Copyright © 2020 GenZmeY
+## Зеркала
+- https://github.com/GenZmeY/multini  
+- https://codeberg.org/GenZmeY/multini  
 
-[MIT License](LICENSE).
-
+## Авторские права и лицензия
+Copyright (c) 2020 GenZmeY - Опубликовано под лицензией [MIT](LICENSE).

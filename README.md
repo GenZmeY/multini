@@ -1,21 +1,17 @@
 # Multini
 
-[![build](https://github.com/GenZmeY/multini/workflows/build/badge.svg)](https://github.com/GenZmeY/multini/actions?query=workflow%3Abuild)
-[![tests](https://github.com/GenZmeY/multini/workflows/tests/badge.svg)](https://github.com/GenZmeY/multini/actions?query=workflow%3Atests)
-[![CodeQL](https://github.com/GenZmeY/multini/workflows/CodeQL/badge.svg)](https://github.com/GenZmeY/multini/security/code-scanning)
 [![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/GenZmeY/multini)](https://golang.org)
+[![GitHub Tag](https://img.shields.io/github/v/tag/GenZmeY/multini)](CHANGELOG.md)
 [![GitHub](https://img.shields.io/github/license/genzmey/multini)](LICENSE)
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/GenZmeY/multini)](https://github.com/GenZmeY/multini/releases)
 
-[English](README.md), [Русский](README-ru.md)
+**change language / сменить язык:**  
+English, [Русский](README-ru.md)
 
-*Command line utility for manipulating ini files with duplicate key names.*
+## Description
+**Command line utility for manipulating ini files with duplicate key names.**  
 
 A compiled version of multini is available on the [release page](https://github.com/GenZmeY/multini/releases).
 
-***
-
-# Description
 Some programs use ini file format with duplicate key names.  
 For example, these are games based on the [unreal engine](https://en.wikipedia.org/wiki/Unreal_Engine).  
 It might look like this (part of the Killing Floor 2 config):  
@@ -29,19 +25,18 @@ ServerSubscribedWorkshopItems=2146677560
 Most implementations only support having one property with a given name in a section. If there are several of them, only the first (or last) key will be processed, which is not enough in this case. multini solves this problem.
 
 **note:**  
-- multini is case sensitive;
-- quotes around the value are not processed (they are part of the value for multini);  
-- multi-line values are not supported.  
-(but this may change in the future)  
+- multini is case sensitive
+- quotes around the value are not processed (they are part of the value for multini)  
+- multi-line values are not supported  
 
-# Build & Install (Manual)
+## Build & Install (Manual)
 1. Install [golang](https://golang.org), [git](https://git-scm.com/), [make](https://www.gnu.org/software/make/);
 2. Clone this repo: `git clone https://github.com/GenZmeY/multini`
 3. Go to the source directory: `cd multini`
 4. Build: `make`
 5. Install: `make install`
 
-# Usage
+## Usage
 ```
 Usage: multini [OPTION]... ACTION ini_file [section] [key] [value]
 Actions:
@@ -65,7 +60,7 @@ Options:
       --version      Write version to stdout
 ```
 
-# Examples
+## Examples
 **output a global value not in a section:**  
 `multini --get ini_file '' key`
 
@@ -104,8 +99,9 @@ Options:
 `multini -gq ini_file section key value`  
 - check the existence of a key with a given value using the return code
 
-# License
-Copyright © 2020 GenZmeY
+## Mirrors
+- https://github.com/GenZmeY/multini  
+- https://codeberg.org/GenZmeY/multini  
 
-The content of this repository is licensed under [MIT License](LICENSE).
-
+## Copyright & License
+Copyright (c) 2020 GenZmeY - Released under the [MIT license](LICENSE).
